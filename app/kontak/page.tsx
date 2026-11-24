@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, InstagramLogo, MapPin, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { Reveal, SplitTitle } from "@/components/Motion";
-import { site, waLink } from "@/lib";
+import { getData } from "@/db";
+import { mapsEmbed, mapsLink, waLink } from "@/lib";
 
 export const metadata: Metadata = { title: "Kontak" };
 
-const ROWS = [
-  { Icon: WhatsappLogo, value: site.whatsappTampil, sub: "Pesan & tanya stok", href: waLink() },
-  { Icon: InstagramLogo, value: site.instagramTampil, sub: "Koleksi terbaru", href: site.instagram },
-];
-
-export default function Kontak() {
+export default async function Kontak() {
+  const { site } = await getData();
+  const ROWS = [
+    { Icon: WhatsappLogo, value: site.whatsapp_tampil, sub: "Pesan & tanya stok", href: waLink(site) },
+    ...(site.instagram ? [{ Icon: InstagramLogo, value: site.instagram_tampil, sub: "Koleksi terbaru", href: site.instagram }] : []),
+  ];
   return (
     <div className="page wrap">
       <header className="head">
@@ -35,9 +36,9 @@ export default function Kontak() {
 
         <Reveal className="map-card" delay={0.1}>
           <div className="map">
-            <iframe src={site.mapsEmbed} title={`Peta lokasi ${site.nama}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+            <iframe src={mapsEmbed(site)} title={`Peta lokasi ${site.nama}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
           </div>
-          <a className="map-addr" href={site.mapsLink} target="_blank" rel="noopener">
+          <a className="map-addr" href={mapsLink(site)} target="_blank" rel="noopener">
             <MapPin size={24} weight="light" className="c-icon" />
             <span className="c-sub">{site.alamat}</span>
             <ArrowUpRight size={18} className="contact-arrow" />

@@ -5,19 +5,19 @@ import {
   useReducedMotion, useScroll, useSpring, useTransform, type AnimationPlaybackControls,
 } from "motion/react";
 import { ArrowRight, WhatsappLogo, X } from "@phosphor-icons/react";
-import { kategoriNama, pesanLink, rupiah, type Product } from "@/lib";
+import { kategoriNama, pesanLink, rupiah, type Category, type Product, type Site } from "@/lib";
 import { SplitTitle, press } from "./Motion";
 import { useHScroll } from "./useHScroll";
 
-// ponytail: kaos placeholder (AI, diwarnai ulang per produk). Ganti /rak/{id}-depan.webp & -samping.webp dengan foto asli.
-const rak = (id: string, sisi: "depan" | "samping") => `/rak/${id}-${sisi}.webp`;
+// foto dari Supabase (diunggah lewat admin). Data awal menunjuk ke /rak/*.webp (placeholder AI).
+const rak = (p: Product, sisi: "depan" | "samping") => (sisi === "depan" ? p.foto_depan : p.foto_samping);
 const ease = [0.16, 1, 0.3, 1] as const;
 const COPIES = 3; // rak diulang 3x; scroll dijaga di salinan tengah supaya terasa tanpa ujung
 const SNAP_IDLE = 140; // ms setelah scroll diam, baju terdekat ditarik ke tengah
 
 type Picked = { p: Product; key: string; from: DOMRect };
 
-export default function ClothingRack({ items }: { items: Product[] }) {
+export default function ClothingRack({ items, site, categories }: { items: Product[]; site: Site; categories: Category[] }) {
   const reduce = useReducedMotion();
   const scroller = useRef<HTMLDivElement>(null);
   const geo = useRef({ step: 0, set: 0, first: 0, last: 0 });
@@ -174,7 +174,7 @@ export default function ClothingRack({ items }: { items: Product[] }) {
               >
                 {/* baju yang baru tiba di tengah berayun pelan sekali */}
                 <motion.img
-                  src={rak(p.id, "samping")} alt="" width={500} height={618} draggable={false}
+                  src={rak(p, "samping")} alt="" width={500} height={618} draggable={false}
                   animate={i === center && !reduce ? { rotate: [0, 2.6, -1.6, 0.8, 0] } : { rotate: 0 }}
                   transition={{ duration: 1.6, ease: "easeOut" }}
                 />
@@ -191,7 +191,7 @@ export default function ClothingRack({ items }: { items: Product[] }) {
                       <span className="hangtag-string" />
                       <span className="hangtag-card">
                         <span className="hangtag-hole" />
-                        <span className="hangtag-cat">{kategoriNama(p.kategori)}</span>
+                        <span className="hangtag-cat">{kategoriNama(categories, p.kategori)}</span>
                         <span className="hangtag-name">{p.nama}</span>
                       </span>
                     </motion.div>
@@ -214,20 +214,20 @@ export default function ClothingRack({ items }: { items: Product[] }) {
       </div>
 
       <div className="wrap rack-foot">
-        <SplitTitle text="Kaos lokal, Banda Aceh" className="caps rack-title" />
+        <SplitTitle text={site.tagline} className="caps rack-title" />
         <div className="rack-count caps muted">
           {String(index + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
           <div className="rack-progress"><motion.span style={{ scaleX: progress }} /></div>
         </div>
       </div>
 
-      <AnimatePresence>{picked && <Stage key={picked.key} picked={picked} onClose={() => setPicked(null)} />}</AnimatePresence>
+      <AnimatePresence>{picked && <Stage key={picked.key} picked={picked} site={site} categories={categories} onClose={() => setPicked(null)} />}</AnimatePresence>
     </div>
   );
 }
 
 /** Detail baju: baju TIDAK pindah. Ia berputar di tempatnya di rak, info muncul di kiri-kanan (HP: di bawah). */
-function Stage({ picked, onClose }: { picked: Picked; onClose: () => void }) {
+function Stage({ picked, site, categories, onClose }: { picked: Picked; site: Site; categories: Category[]; onClose: () => void }) {
   const { p, from } = picked;
   const reduce = useReducedMotion();
   const [scope, animate] = useAnimate();
@@ -287,13 +287,13 @@ function Stage({ picked, onClose }: { picked: Picked; onClose: () => void }) {
         <div className="stage-shirt">
           <div className="flip">
             {/* dua sisi dimuat sekaligus; berputar = tukar opacity, bukan ganti src (ganti src bikin kedip 1 frame) */}
-            <img src={rak(p.id, "samping")} alt="" width={500} height={618} style={{ opacity: face === "samping" ? 1 : 0 }} />
-            <img src={rak(p.id, "depan")} alt={`${p.nama}, tampak depan`} width={500} height={618} style={{ opacity: face === "depan" ? 1 : 0 }} />
+            <img src={rak(p, "samping")} alt="" width={500} height={618} style={{ opacity: face === "samping" ? 1 : 0 }} />
+            <img src={rak(p, "depan")} alt={`${p.nama}, tampak depan`} width={500} height={618} style={{ opacity: face === "depan" ? 1 : 0 }} />
           </div>
         </div>
         {/* nama di atas baju, detail di bawah baju: rata tengah, tanpa tabel & kotak */}
         <motion.div className="stage-head" {...info(0.55)}>
-          <p className="caps muted">{kategoriNama(p.kategori)}</p>
+          <p className="caps muted">{kategoriNama(categories, p.kategori)}</p>
           <h2 id="stage-title" className="display italic">{p.nama}</h2>
         </motion.div>
         <motion.div className="stage-body" {...info(0.7)}>
@@ -302,7 +302,7 @@ function Stage({ picked, onClose }: { picked: Picked; onClose: () => void }) {
             {rupiah(p.harga)}<span className="muted"> · {p.bahan} · {p.ukuran.join(" ")}</span>
           </p>
           <motion.a
-            className="ask caps" href={pesanLink(p.nama)}
+            className="ask caps" href={pesanLink(site, p.nama)}
             target="_blank" rel="noopener" whileTap={{ scale: 0.98 }}
           >
             <span><WhatsappLogo size={16} /> Pesan via WhatsApp</span>

@@ -1,12 +1,22 @@
-import products from "./data/products.json";
-import categories from "./data/categories.json";
-import site from "./data/site.json";
+// Supabase. Publishable key aman ditaruh di kode: yang menjaga data adalah RLS di database.
+// JANGAN pernah taruh secret key (sb_secret_...) di sini.
+export const SUPABASE_URL = "https://ydnvhfioifyrzjlvsxqa.supabase.co";
+export const SUPABASE_KEY = "sb_publishable_z5VyEqBj0pBvivISfr9PrA_bwDGQdIC";
 
-export type Product = (typeof products)[number];
-export { products, categories, site };
+export type Site = {
+  nama: string; tagline: string; whatsapp: string; whatsapp_tampil: string;
+  instagram: string; instagram_tampil: string; alamat: string; lat: number; lng: number;
+};
+export type Category = { id: string; nama: string; urutan: number };
+export type Product = {
+  id: string; nama: string; kategori: string; deskripsi: string; bahan: string; harga: number;
+  ukuran: string[]; featured: boolean; urutan: number; foto_depan: string; foto_samping: string;
+};
 
-export const kategoriNama = (id: string) => categories.find((c) => c.id === id)?.nama ?? id;
+export const kategoriNama = (categories: Category[], id: string) => categories.find((c) => c.id === id)?.nama ?? id;
 export const rupiah = (n: number) => "Rp " + n.toLocaleString("id-ID");
-export const waLink = (pesan = `Halo ${site.nama}, saya mau tanya.`) =>
+export const waLink = (site: Site, pesan = `Halo ${site.nama}, saya mau tanya.`) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(pesan)}`;
-export const pesanLink = (nama: string) => waLink(`Halo ${site.nama}, saya mau pesan kaos ${nama}. Ukuran: `);
+export const pesanLink = (site: Site, nama: string) => waLink(site, `Halo ${site.nama}, saya mau pesan kaos ${nama}. Ukuran: `);
+export const mapsEmbed = (s: Site) => `https://www.google.com/maps?q=${s.lat},${s.lng}&z=16&output=embed`;
+export const mapsLink = (s: Site) => `https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}`;
