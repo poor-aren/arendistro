@@ -1,0 +1,182 @@
+[
+  {
+    "id": "kaos-hitam",
+    "nama": "Basic Hitam",
+    "kategori": "basic",
+    "deskripsi": "Kaos polos hitam, potongan reguler.",
+    "bahan": "Cotton combed 30s",
+    "harga": 125000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-forest",
+    "nama": "Forest",
+    "kategori": "graphic",
+    "deskripsi": "Hijau tua dengan sablon kecil di dada.",
+    "bahan": "Cotton combed 24s",
+    "harga": 145000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-mustard",
+    "nama": "Mustard",
+    "kategori": "oversize",
+    "deskripsi": "Potongan oversize, bahu turun.",
+    "bahan": "Cotton combed 20s",
+    "harga": 155000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-krim",
+    "nama": "Basic Krim",
+    "kategori": "basic",
+    "deskripsi": "Kaos polos krim, potongan reguler.",
+    "bahan": "Cotton combed 30s",
+    "harga": 125000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-dusty-pink",
+    "nama": "Dusty Pink",
+    "kategori": "oversize",
+    "deskripsi": "Potongan oversize, warna pink pudar.",
+    "bahan": "Cotton combed 20s",
+    "harga": 155000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-navy",
+    "nama": "Basic Navy",
+    "kategori": "basic",
+    "deskripsi": "Kaos polos biru dongker, potongan reguler.",
+    "bahan": "Cotton combed 30s",
+    "harga": 125000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-kuning",
+    "nama": "Sunny",
+    "kategori": "graphic",
+    "deskripsi": "Kuning cerah dengan sablon punggung.",
+    "bahan": "Cotton combed 24s",
+    "harga": 145000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-sand",
+    "nama": "Sand",
+    "kategori": "oversize",
+    "deskripsi": "Potongan oversize, warna pasir.",
+    "bahan": "Cotton combed 20s",
+    "harga": 155000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-charcoal",
+    "nama": "Charcoal",
+    "kategori": "graphic",
+    "deskripsi": "Abu gelap dengan sablon kecil di dada.",
+    "bahan": "Cotton combed 24s",
+    "harga": 145000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-maroon",
+    "nama": "Basic Maroon",
+    "kategori": "basic",
+    "deskripsi": "Kaos polos merah marun, potongan reguler.",
+    "bahan": "Cotton combed 30s",
+    "harga": 125000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-grape",
+    "nama": "Grape",
+    "kategori": "graphic",
+    "deskripsi": "Ungu tua dengan sablon punggung.",
+    "bahan": "Cotton combed 24s",
+    "harga": 145000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  },
+  {
+    "id": "kaos-rust",
+    "nama": "Rust",
+    "kategori": "oversize",
+    "deskripsi": "Potongan oversize, warna karat.",
+    "bahan": "Cotton combed 20s",
+    "harga": 155000,
+    "ukuran": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "featured": true
+  }
+]

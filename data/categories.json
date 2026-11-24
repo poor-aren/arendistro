@@ -1,0 +1,14 @@
+[
+  {
+    "id": "basic",
+    "nama": "Basic"
+  },
+  {
+    "id": "graphic",
+    "nama": "Graphic"
+  },
+  {
+    "id": "oversize",
+    "nama": "Oversize"
+  }
+]
