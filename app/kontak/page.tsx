@@ -8,10 +8,6 @@ export const metadata: Metadata = { title: "Kontak" };
 
 export default async function Kontak() {
   const { site } = await getData();
-  const ROWS = [
-    { Icon: WhatsappLogo, value: site.whatsapp_tampil, sub: "Pesan & tanya stok", href: waLink(site) },
-    ...(site.instagram ? [{ Icon: InstagramLogo, value: site.instagram_tampil, sub: "Koleksi terbaru", href: site.instagram }] : []),
-  ];
   return (
     <div className="page wrap">
       <header className="head">
@@ -19,28 +15,40 @@ export default async function Kontak() {
       </header>
 
       <div className="contact">
-        <ul className="contacts">
-          {ROWS.map(({ Icon, value, sub, href }, i) => (
-            <Reveal key={value} as="li" delay={i * 0.08}>
-              <a className="contact-row" href={href} target="_blank" rel="noopener">
-                <Icon size={28} weight="light" className="c-icon" />
+        <div className="contact-info">
+          {/* WhatsApp = jalur utama pemesanan, jadi nomornya dibuat paling besar */}
+          <Reveal>
+            <a className="wa-hero" href={waLink(site)} target="_blank" rel="noopener">
+              <span className="wa-label caps"><WhatsappLogo size={18} /> WhatsApp</span>
+              <span className="wa-num">{site.whatsapp_tampil}</span>
+              <span className="wa-sub">Pesan &amp; tanya stok <ArrowUpRight size={16} className="contact-arrow" /></span>
+            </a>
+          </Reveal>
+
+          {site.instagram && (
+            <Reveal delay={0.1}>
+              <a className="contact-row" href={site.instagram} target="_blank" rel="noopener">
+                <InstagramLogo size={26} weight="light" className="c-icon" />
                 <span>
-                  <span className="c-main">{value}</span>
-                  <span className="c-sub">{sub}</span>
+                  <span className="c-main">{site.instagram_tampil}</span>
+                  <span className="c-sub">Koleksi terbaru</span>
                 </span>
                 <ArrowUpRight size={18} className="contact-arrow" />
               </a>
             </Reveal>
-          ))}
-        </ul>
+          )}
+        </div>
 
-        <Reveal className="map-card" delay={0.1}>
+        <Reveal className="map-card" delay={0.15}>
           <div className="map">
             <iframe src={mapsEmbed(site)} title={`Peta lokasi ${site.nama}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
           </div>
           <a className="map-addr" href={mapsLink(site)} target="_blank" rel="noopener">
             <MapPin size={24} weight="light" className="c-icon" />
-            <span className="c-sub">{site.alamat}</span>
+            <span>
+              <span className="c-main small">{site.alamat}</span>
+              <span className="c-sub">Buka di Google Maps</span>
+            </span>
             <ArrowUpRight size={18} className="contact-arrow" />
           </a>
         </Reveal>

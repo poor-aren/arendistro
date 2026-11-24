@@ -10,10 +10,12 @@ export type Site = {
 export type Category = { id: string; nama: string; urutan: number };
 export type Product = {
   id: string; nama: string; kategori: string; deskripsi: string; bahan: string; harga: number;
-  ukuran: string[]; featured: boolean; urutan: number; foto_depan: string; foto_samping: string;
+  ukuran: string[]; habis?: string[]; featured: boolean; urutan: number; foto_depan: string; foto_samping: string;
 };
 
 export const kategoriNama = (categories: Category[], id: string) => categories.find((c) => c.id === id)?.nama ?? id;
+// habis = ukuran yang stoknya kosong (diatur di admin)
+export const habisSemua = (p: Product) => p.ukuran.length > 0 && p.ukuran.every((u) => p.habis?.includes(u));
 export const rupiah = (n: number) => "Rp " + n.toLocaleString("id-ID");
 export const waLink = (site: Site, pesan = `Halo ${site.nama}, saya mau tanya.`) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(pesan)}`;

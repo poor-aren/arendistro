@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { createClient, type Session } from "@supabase/supabase-js";
 import { ArrowLeft, ArrowSquareOut, Plus, SignOut, Trash } from "@phosphor-icons/react";
-import { rupiah, SUPABASE_KEY, SUPABASE_URL, type Category, type Product, type Site } from "@/lib";
+import { habisSemua, rupiah, SUPABASE_KEY, SUPABASE_URL, type Category, type Product, type Site } from "@/lib";
 
 // Keamanan ada di database (RLS + tabel admins). Validasi di sini hanya supaya pesan errornya jelas.
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -157,7 +157,7 @@ function Products({ products, categories, reload }: { products: Product[]; categ
             <img src={p.foto_depan} alt="" width={56} height={70} />
             <button className="a-info" onClick={() => { setMsg(""); setEditing(p); }}>
               <span className="a-name">{p.nama}</span>
-              <span className="muted">{rupiah(p.harga)} · {categories.find((c) => c.id === p.kategori)?.nama ?? p.kategori}</span>
+              <span className="muted">{rupiah(p.harga)} · {categories.find((c) => c.id === p.kategori)?.nama ?? p.kategori}{habisSemua(p) && <b className="a-out"> · Habis</b>}</span>
             </button>
             <label className="a-check" title="Tampil di rak Home">
               <input type="checkbox" checked={p.featured} onChange={() => toggle(p)} /> <span className="caps">Rak</span>
@@ -173,9 +173,9 @@ function Products({ products, categories, reload }: { products: Product[]; categ
 function ProductForm({ initial, categories, next, onDone, onCancel }: {
   initial: Product | null; categories: Category[]; next: number; onDone: (msg: string) => void; onCancel: () => void;
 }) {
-  const [p, setP] = useState<Product>(initial ?? {
+  const [p, setP] = useState<Product>(initial ? { ...initial, habis: initial.habis ?? [] } : {
     id: "", nama: "", kategori: categories[0]?.id ?? "", deskripsi: "", bahan: "", harga: 0,
-    ukuran: ["S", "M", "L", "XL"], featured: true, urutan: next, foto_depan: "", foto_samping: "",
+    ukuran: ["S", "M", "L", "XL"], habis: [], featured: true, urutan: next, foto_depan: "", foto_samping: "",
   });
   const [files, setFiles] = useState<{ depan?: File; samping?: File }>({});
   const [preview, setPreview] = useState<{ depan?: string; samping?: string }>({});
@@ -271,11 +271,28 @@ function ProductForm({ initial, categories, next, onDone, onCancel }: {
           {UKURAN.map((u) => (
             <label key={u} className="a-size">
               <input type="checkbox" checked={p.ukuran.includes(u)}
-                onChange={(e) => set("ukuran", e.target.checked ? UKURAN.filter((x) => x === u || p.ukuran.includes(x)) : p.ukuran.filter((x) => x !== u))} />
+                onChange={(e) => setP((x) => ({
+                  ...x,
+                  ukuran: e.target.checked ? UKURAN.filter((y) => y === u || x.ukuran.includes(y)) : x.ukuran.filter((y) => y !== u),
+                  habis: (x.habis ?? []).filter((y) => y !== u || e.target.checked),
+                }))} />
               <span>{u}</span>
             </label>
           ))}
         </div>
+      </fieldset>
+      <fieldset className="field">
+        <legend className="caps">Stok habis</legend>
+        <div className="a-sizes">
+          {p.ukuran.map((u) => (
+            <label key={u} className="a-size out">
+              <input type="checkbox" checked={!!p.habis?.includes(u)}
+                onChange={(e) => set("habis", e.target.checked ? p.ukuran.filter((y) => y === u || p.habis?.includes(y)) : (p.habis ?? []).filter((y) => y !== u))} />
+              <span>{u}</span>
+            </label>
+          ))}
+        </div>
+        <small className="muted">Centang ukuran yang sedang kosong. Di web ukuran itu dicoret.</small>
       </fieldset>
       <div className="a-2">
         <label className="a-check big"><input type="checkbox" checked={p.featured} onChange={(e) => set("featured", e.target.checked)} /> Tampil di rak Home</label>

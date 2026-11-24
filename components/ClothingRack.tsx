@@ -193,6 +193,7 @@ export default function ClothingRack({ items, site, categories }: { items: Produ
                         <span className="hangtag-hole" />
                         <span className="hangtag-cat">{kategoriNama(categories, p.kategori)}</span>
                         <span className="hangtag-name">{p.nama}</span>
+                        <span className="hangtag-price">{rupiah(p.harga)}</span>
                       </span>
                     </motion.div>
                   )}
@@ -299,7 +300,12 @@ function Stage({ picked, site, categories, onClose }: { picked: Picked; site: Si
         <motion.div className="stage-body" {...info(0.7)}>
           <p className="muted stage-desc">{p.deskripsi}</p>
           <p className="stage-facts">
-            {rupiah(p.harga)}<span className="muted"> · {p.bahan} · {p.ukuran.join(" ")}</span>
+            {rupiah(p.harga)}<span className="muted"> · {p.bahan}</span>
+          </p>
+          <p className="sizes" aria-label="Ukuran">
+            {p.ukuran.map((u) => p.habis?.includes(u)
+              ? <s key={u} className="out" title={`${u} habis`}>{u}<span className="sr-only"> habis</span></s>
+              : <span key={u}>{u}</span>)}
           </p>
           <motion.a
             className="ask caps" href={pesanLink(site, p.nama)}

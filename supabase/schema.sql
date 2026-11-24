@@ -33,6 +33,7 @@ create table public.products (
   bahan text not null default '' check (length(bahan) <= 80),
   harga int not null check (harga between 0 and 100000000),
   ukuran text[] not null default array['S','M','L','XL'],
+  habis text[] not null default '{}',                      -- ukuran yang stoknya kosong
   featured boolean not null default true,                 -- tampil di rak Home
   urutan int not null default 0,
   foto_depan text not null default '',
