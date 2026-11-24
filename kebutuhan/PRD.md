@@ -7,3 +7,5 @@
 - Kontak : WA 0821 6472 2887, IG @ilham.aren, map Prada Banda Aceh
 - Logo : gantungan baju, AREN SUPPLY
 - Tech : Next.js, hosting Vercel
+- Halaman : 3 Halaman, Landing, Galeri, Kontak
+- Security : Authentiocation Supabase, RLS Supabase, Secret Api Key to Write, 
